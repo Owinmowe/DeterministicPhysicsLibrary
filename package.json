@@ -5,7 +5,7 @@
   "description": "Deterministic Physics Library created in conjunction of my own Fixed Point Library.",
   "unity": "2020.1",
   "dependencies": {
-    "com.owinmowe.fixedpointlibrary": "1.0.1"  
+    "com.owinmowe.fixedpointlibrary": "https://github.com/Owinmowe/FixedPointLibrary.git"
   },
   "author": {
     "name": "Adrian Sgro",
