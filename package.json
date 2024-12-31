@@ -4,8 +4,7 @@
   "displayName": "Deterministic Physics Library",
   "description": "Deterministic Physics Library created in conjunction of my own Fixed Point Library.",
   "unity": "2020.1",
-  "dependencies": 
-  {
+  "dependencies": {
     "com.owinmowe.fixedpointlibrary": "1.0.1"  
   },
   "author": {
