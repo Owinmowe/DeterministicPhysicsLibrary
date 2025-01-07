@@ -1,0 +1,21 @@
+{
+    "name": "DeterministicPhysicsLibrary.Managed.Components",
+    "rootNamespace": "",
+    "references": [
+        "GUID:03a39c689aed1624f8eebe4d5bf3b0f0",
+        "GUID:13585a5dc90fcb744866e1d28a16461b",
+        "GUID:25866be5b2bed2a459f640c9a926e78a",
+        "GUID:833e8628b99802e47b750e45890a0667",
+        "GUID:9039ae0a43491ca4cad5f50c86822ddc",
+        "GUID:8c31873472fe5a34599a8b03cd64083e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

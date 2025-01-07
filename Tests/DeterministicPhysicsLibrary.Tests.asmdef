@@ -4,9 +4,9 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "DeterministicPhysicsLibrary",
         "FixedPoint.SubTypes",
-        "FixedPoint.Math"
+        "FixedPoint.Math",
+        "DeterministicPhysicsLibrary.Types"
     ],
     "includePlatforms": [
         "Editor"

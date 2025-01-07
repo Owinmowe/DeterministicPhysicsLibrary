@@ -1,6 +1,5 @@
-using FixedPoint;
+using DeterministicPhysicsLibrary.Runtime;
 using FixedPoint.SubTypes;
-using FixedPointLibrary.Runtime;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -83,12 +82,12 @@ namespace DeterministicPhysicsLibrary.Tests
         [Test]
         public void IntersectsTest()
         {
-            Vector3 testBoundCenter1 = new Vector3(-.2f, -12312f, 1f);
-            Vector3 testBoundSize1 = new Vector3(12.2f, -.213f, -5f);
+            Vector3 testBoundCenter1 = new Vector3(0, 0, 0);
+            Vector3 testBoundSize1 = new Vector3(2, 2, 2);
             Bounds testBounds1 = new Bounds(center: testBoundCenter1, size: testBoundSize1);
             
-            Vector3 testBoundCenter2 = new Vector3(-.2f, -12312f, 1f);
-            Vector3 testBoundSize2 = new Vector3(12.2f, -.213f, -5f);
+            Vector3 testBoundCenter2 = new Vector3(0, 1, 1);
+            Vector3 testBoundSize2 = new Vector3(2, 2, 2);
             Bounds testBounds2 = new Bounds(center: testBoundCenter2, size: testBoundSize2);
             
             BoundsFp testBoundsFixed1 = new BoundsFp((Vector3Fp)testBounds1.center, (Vector3Fp)testBounds1.size);

@@ -1,0 +1,17 @@
+{
+    "name": "DeterministicPhysicsLibrary.Types",
+    "rootNamespace": "",
+    "references": [
+        "GUID:03a39c689aed1624f8eebe4d5bf3b0f0",
+        "GUID:13585a5dc90fcb744866e1d28a16461b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

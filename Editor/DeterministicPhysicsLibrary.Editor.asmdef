@@ -1,0 +1,20 @@
+{
+    "name": "DeterministicPhysicsLibrary.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:32623c4deed5bb04f9eaf7089f0bffd0",
+        "GUID:9039ae0a43491ca4cad5f50c86822ddc",
+        "GUID:833e8628b99802e47b750e45890a0667"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

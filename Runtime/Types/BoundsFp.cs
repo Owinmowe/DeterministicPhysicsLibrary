@@ -2,7 +2,7 @@ using System;
 using FixedPoint;
 using FixedPoint.SubTypes;
 
-namespace FixedPointLibrary.Runtime
+namespace DeterministicPhysicsLibrary.Runtime
 {
     public struct BoundsFp : IEquatable<BoundsFp>, IFormattable
     {
