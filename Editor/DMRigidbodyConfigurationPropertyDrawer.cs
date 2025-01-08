@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DeterministicPhysicsLibrary.Editor
 {
-    [CustomPropertyDrawer(typeof(DMRigidbodyConfiguration))]
+    [CustomPropertyDrawer(typeof(DRigidbodyConfiguration))]
     public class DMRigidbodyConfigurationPropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

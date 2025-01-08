@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DeterministicPhysicsLibrary.Editor
 {
-    [CustomPropertyDrawer(typeof(DMRigidbodyCollisionDetection))]
+    [CustomPropertyDrawer(typeof(DRigidbodyCollisionDetection))]
     public class DMRigidbodyCollisionDetectionPropertyDrawer : PropertyDrawer
     {
         bool foldoutOpen = true;

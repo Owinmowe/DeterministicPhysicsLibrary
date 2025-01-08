@@ -2,8 +2,11 @@
     "name": "DeterministicPhysicsLibrary.Stateless",
     "rootNamespace": "",
     "references": [
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:e0cd26848372d4e5c891c569017e11f1",
         "GUID:03a39c689aed1624f8eebe4d5bf3b0f0",
         "GUID:13585a5dc90fcb744866e1d28a16461b",
+        "GUID:833e8628b99802e47b750e45890a0667",
         "GUID:25866be5b2bed2a459f640c9a926e78a"
     ],
     "includePlatforms": [],

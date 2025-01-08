@@ -5,7 +5,7 @@ namespace DeterministicPhysicsLibrary.Runtime
 {
     public struct DeterministicRigidbodyData
     {
-        public ulong Index;
+        public int Index;
 
         public Vector3Fp Position;
         public QuaternionFp Rotation;
@@ -15,10 +15,9 @@ namespace DeterministicPhysicsLibrary.Runtime
         public Vector3Fp Acceleration;
         public Vector3Fp AngularAcceleration;
 
-        public Fp Mass;
-
         public ColliderType ColliderType;
         public CollisionLayer CollisionLayer;
+        public Fp Mass;
         public Fp Radius;
         public Vector3Fp Extents;
         public BoundsFp Bounds;

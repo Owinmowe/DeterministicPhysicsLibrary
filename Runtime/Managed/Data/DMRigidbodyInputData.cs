@@ -1,21 +1,18 @@
 using FixedPoint;
 using FixedPoint.SubTypes;
 
-namespace DeterministicPhysicsLibrary.Runtime.Stateless
+namespace DeterministicPhysicsLibrary.Runtime.Managed 
 {
-    public struct DSRigidbodyInputData
+    public struct DMRigidbodyInputData
     {
-        public Vector3Fp Position;
-        public QuaternionFp Rotation;
-
-        public Vector3Fp ExternalAcceleration;
-        public Vector3Fp ExternalAngularAcceleration;
-
         public ColliderType ColliderType;
         public CollisionLayer CollisionLayer;
         public Fp Mass;
         public Fp Radius;
         public Vector3Fp Extents;
+
+        public Vector3Fp ExternalAcceleration;
+        public Vector3Fp ExternalAngularAcceleration;
 
         public CollisionResponseType CollisionResponseType;
     }

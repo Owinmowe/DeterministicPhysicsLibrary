@@ -3,7 +3,7 @@ using DeterministicPhysicsLibrary.Runtime;
 namespace DeterministicPhysicsLibrary.Unity
 {
     [System.Serializable]
-    public class DMRigidbodyCollisionResponse
+    public class DRigidbodyCollisionResponse
     {
         public CollisionResponseType collisionResponseType = (CollisionResponseType)~0;
     }
