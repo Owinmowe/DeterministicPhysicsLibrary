@@ -4,7 +4,6 @@ using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
-using static UnityEngine.UI.Image;
 
 namespace DeterministicPhysicsLibrary.Runtime.Managed
 {
@@ -79,7 +78,19 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
 
         private bool IsCollidingSphereWithBox(DMRigidbodyData sphere, DMRigidbodyData box)
         {
-            return true;
+            QuaternionFp inverseRotation = MathQuaternionFp.Inverse(box.simData.Rotation);
+            Vector3Fp localSphereCenter = inverseRotation * (sphere.simData.Position - box.simData.Position);
+
+            Vector3Fp localClosestPoint = new Vector3Fp(
+                MathFp.Clamp(localSphereCenter.x, -box.output.Bounds.Extents.x, box.output.Bounds.Extents.x),
+                MathFp.Clamp(localSphereCenter.y, -box.output.Bounds.Extents.y, box.output.Bounds.Extents.y),
+                MathFp.Clamp(localSphereCenter.z, -box.output.Bounds.Extents.z, box.output.Bounds.Extents.z)
+            );
+
+            Vector3Fp closestPointWorld = box.simData.Position + (box.simData.Rotation * localClosestPoint);
+
+            Fp distanceSquared = (closestPointWorld - sphere.simData.Position).SqrtMagnitude;
+            return distanceSquared <= sphere.input.Radius * sphere.input.Radius;
         }
 
         private bool IsCollidingBoxWithBox(DMRigidbodyData box1, DMRigidbodyData box2)

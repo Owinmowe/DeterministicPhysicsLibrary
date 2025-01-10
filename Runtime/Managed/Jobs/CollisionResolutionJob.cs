@@ -1,4 +1,3 @@
-using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -19,6 +18,12 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
 
                 DMRigidbodyData dataA = rigidbodiesData[colliderIndexA];
                 DMRigidbodyData dataB = rigidbodiesData[colliderIndexB];
+
+                dataA.output.Colliding = true;
+                dataB.output.Colliding = true;
+
+                rigidbodiesData[colliderIndexA] = dataA;
+                rigidbodiesData[colliderIndexB] = dataB;
             }
         }
 

@@ -26,6 +26,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
 
             data.output.Position = data.simData.Position;
             data.output.Rotation = data.simData.Rotation;
+            data.output.Colliding = false;
 
             rigidbodiesData[index] = data;
         }

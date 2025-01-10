@@ -85,10 +85,9 @@ namespace DeterministicPhysicsLibrary.Unity
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.green;
-
             foreach (var drb in _gizmosDictionary)
             {
+                Gizmos.color = drb.Value.output.Colliding ? Color.red : Color.green;
                 Gizmos.DrawWireCube((Vector3)drb.Value.output.Bounds.Center, (Vector3)drb.Value.output.Bounds.Size);
             }
         }

@@ -109,6 +109,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
             JobHandle collisionResolutionJobHandle = collisionResolutionJob.Schedule();
             collisionResolutionJobHandle.Complete();
 
+            _collisionIndexesHashSet.Clear();
             collisionArray.Dispose();
 
             foreach (var data in _dataArray)
