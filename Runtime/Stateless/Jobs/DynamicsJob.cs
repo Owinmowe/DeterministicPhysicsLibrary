@@ -21,6 +21,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             rigidbody.output.AngularVelocity += rigidbody.input.ExternalAngularAcceleration * deltaTime;
 
             rigidbody.output.PredictedPosition = rigidbody.input.Position + rigidbody.output.Velocity * deltaTime;
+            rigidbody.output.PredictedRotation = rigidbody.input.Rotation;
             //rigidbody.output.PredictedRotation = rigidbody.input.PredictedRotation + rigidbody.output.AngularVelocity * deltaTime;
 
             rigidbodiesData[index] = rigidbody;

@@ -21,10 +21,10 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
                     data.output.Bounds = new BoundsFp();
                     break;
                 case ColliderType.Box:
-                    data.output.Bounds = GetBoxBounds(data.input.Position, data.input.Extents, data.input.Rotation);
+                    data.output.Bounds = GetBoxBounds(data.output.PredictedPosition, data.input.Extents, data.input.Rotation);
                     break;
                 case ColliderType.Sphere:
-                    data.output.Bounds = GetSphereBounds(data.input.Position, data.input.Radius);
+                    data.output.Bounds = GetSphereBounds(data.output.PredictedPosition, data.input.Radius);
                     break;
                 default:
                     break;

@@ -3,7 +3,6 @@ using Unity.Jobs;
 using Unity.Burst;
 using Unity.Collections;
 using FixedPoint;
-using UnityEngine;
 using FixedPoint.SubTypes;
 
 namespace DeterministicPhysicsLibrary.Runtime.Stateless
@@ -11,17 +10,26 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
     [BurstCompile]
     public struct CollisionDetectionJob : IJobParallelFor
     {
-        [ReadOnly] public NativeArray<DSRigidbodyData> rigidbodiesData;
+        public NativeArray<DSRigidbodyData> rigidbodiesData;
         public NativeParallelHashSet<int>.ParallelWriter collisionIndexesHashSet;
 
         public void Execute(int index)
         {
+            ColliderType typeBody1 = rigidbodiesData[index].input.ColliderType;
+            
+            if (typeBody1 == ColliderType.None)
+                return;
+
             for (int i = 0; i < rigidbodiesData.Length; i++)
             {
                 bool differentCollision = i != index;
 
                 if (!differentCollision)
                     continue;
+
+                ColliderType typeBody2 = rigidbodiesData[i].input.ColliderType;
+                if (typeBody2 == ColliderType.None)
+                    return;
 
                 bool aabbIntersects = rigidbodiesData[i].output.Bounds.Intersects(rigidbodiesData[index].output.Bounds);
 
@@ -35,26 +43,28 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
 
                 bool collided = true;
 
-                if (rigidbodiesData[i].input.ColliderType == ColliderType.Sphere)
+
+                if (typeBody1 == ColliderType.Box)
                 {
-                    if (rigidbodiesData[index].input.ColliderType == ColliderType.Sphere)
-                    {
-                        collided = IsCollidingSphereWithSphere(rigidbodiesData[i], rigidbodiesData[index]);
-                    }
-                    else
-                    {
-                        collided = IsCollidingSphereWithBox(rigidbodiesData[i], rigidbodiesData[index]);
-                    }
-                }
-                else
-                {
-                    if (rigidbodiesData[index].input.ColliderType == ColliderType.Sphere)
-                    {
-                        collided = IsCollidingSphereWithBox(rigidbodiesData[i], rigidbodiesData[index]);
-                    }
-                    else
+                    if (typeBody2 == ColliderType.Box) 
                     {
                         collided = IsCollidingBoxWithBox(rigidbodiesData[i], rigidbodiesData[index]);
+                    }
+                    else 
+                    {
+                        collided = IsCollidingSphereWithBox(i, index);
+                    }
+
+                }
+                else// if (typeBody1 == ColliderType.Sphere)
+                {
+                    if (typeBody2 == ColliderType.Box)
+                    {
+                        collided = IsCollidingSphereWithBox(index, i);
+                    }
+                    else
+                    {
+                        collided = IsCollidingSphereWithSphere(rigidbodiesData[index], rigidbodiesData[i]);
                     }
                 }
 
@@ -77,9 +87,30 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             return sphere1.input.Radius + sphere2.input.Radius >= sphereCenterDistance;
         }
 
-        private bool IsCollidingSphereWithBox(DSRigidbodyData sphere, DSRigidbodyData box)
+        private bool IsCollidingSphereWithBox(int sphereIndex,int boxIndex) 
         {
-            return true;
+            DSRigidbodyData box = rigidbodiesData[boxIndex];
+            DSRigidbodyData sphere = rigidbodiesData[sphereIndex];
+
+            QuaternionFp inverseRotation = MathQuaternionFp.Inverse(box.output.PredictedRotation);
+            Vector3Fp localSphereCenter = inverseRotation * (sphere.output.PredictedPosition - box.output.PredictedPosition);
+
+            Vector3Fp localClosestPoint = new Vector3Fp(
+                MathFp.Clamp(localSphereCenter.x, -box.output.Bounds.Extents.x, box.output.Bounds.Extents.x),
+                MathFp.Clamp(localSphereCenter.y, -box.output.Bounds.Extents.y, box.output.Bounds.Extents.y),
+                MathFp.Clamp(localSphereCenter.z, -box.output.Bounds.Extents.z, box.output.Bounds.Extents.z)
+            );
+
+            Vector3Fp closestPointWorld = box.output.PredictedPosition + (box.output.PredictedRotation * localClosestPoint);
+
+            box.output.ClosestPointWorld = closestPointWorld;
+            sphere.output.ClosestPointWorld = closestPointWorld;
+
+            rigidbodiesData[boxIndex] = box;
+            rigidbodiesData[sphereIndex] = sphere;
+
+            Fp distanceSquared = (closestPointWorld - sphere.output.PredictedPosition).SqrtMagnitude;
+            return distanceSquared <= sphere.input.Radius * sphere.input.Radius;
         }
 
         private bool IsCollidingBoxWithBox(DSRigidbodyData box1, DSRigidbodyData box2)

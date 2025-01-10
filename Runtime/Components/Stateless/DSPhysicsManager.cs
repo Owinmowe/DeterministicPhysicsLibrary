@@ -98,6 +98,9 @@ namespace DeterministicPhysicsLibrary.Unity
                 Gizmos.color = drb.Value.output.Colliding ? Color.red : Color.green;
 
                 Gizmos.DrawWireCube((Vector3)drb.Value.output.Bounds.Center, (Vector3)drb.Value.output.Bounds.Size);
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere((Vector3)drb.Value.output.ClosestPointWorld, .1f);
             }
         }
     }

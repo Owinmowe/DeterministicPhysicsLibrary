@@ -10,5 +10,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
         public Vector3Fp AngularVelocity;
         public BoundsFp Bounds;
         public bool Colliding;
+
+        public Vector3Fp ClosestPointWorld;
     }
 }
