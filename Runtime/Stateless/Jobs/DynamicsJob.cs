@@ -1,4 +1,3 @@
-using FixedPoint;
 using Unity.Jobs;
 using Unity.Burst;
 using Unity.Collections;
@@ -9,7 +8,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
     public struct DynamicsJob : IJobParallelFor
     {
         public NativeArray<DSRigidbodyData> rigidbodiesData;
-        public Fp deltaTime;
+        public float deltaTime;
 
         public void Execute(int index)
         {

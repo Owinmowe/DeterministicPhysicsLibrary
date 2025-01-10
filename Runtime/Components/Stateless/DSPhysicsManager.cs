@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using FixedPoint;
-using FixedPoint.SubTypes;
 using DeterministicPhysicsLibrary.Runtime.Stateless;
 
 namespace DeterministicPhysicsLibrary.Unity
@@ -45,8 +43,8 @@ namespace DeterministicPhysicsLibrary.Unity
         {
             DSRigidbodyInputData data = rigidBodyComponent.Data.GetInputData();
 
-            data.Position = (Vector3Fp)rigidBodyComponent.transform.position;
-            data.Rotation = (QuaternionFp)rigidBodyComponent.transform.rotation;
+            data.Position = rigidBodyComponent.transform.position;
+            data.Rotation = rigidBodyComponent.transform.rotation;
 
             int rigidbodyIndex = _statelessSimulation.AddRigidbody(data);
 
@@ -80,13 +78,13 @@ namespace DeterministicPhysicsLibrary.Unity
             {
                 var data = keyPairRigidbody.Value.Data.GetInputData();
 
-                data.Position = (Vector3Fp)keyPairRigidbody.Value.transform.position;
-                data.Rotation = (QuaternionFp)keyPairRigidbody.Value.transform.rotation;
+                data.Position = keyPairRigidbody.Value.transform.position;
+                data.Rotation = keyPairRigidbody.Value.transform.rotation;
 
                 _statelessSimulation.UpdateRigidbodyData(keyPairRigidbody.Key, data);
             }
 
-            _statelessSimulation.UpdateSimulation(new Fp(Time.fixedDeltaTime));
+            _statelessSimulation.UpdateSimulation(Time.fixedDeltaTime);
         }
 
         private void OnDrawGizmos()
@@ -97,10 +95,10 @@ namespace DeterministicPhysicsLibrary.Unity
             {
                 Gizmos.color = drb.Value.output.Colliding ? Color.red : Color.green;
 
-                Gizmos.DrawWireCube((Vector3)drb.Value.output.Bounds.Center, (Vector3)drb.Value.output.Bounds.Size);
+                Gizmos.DrawWireCube(drb.Value.output.Bounds.center, drb.Value.output.Bounds.size);
 
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere((Vector3)drb.Value.output.ClosestPointWorld, .1f);
+                Gizmos.DrawSphere(drb.Value.output.ClosestPointWorld, .1f);
             }
         }
     }

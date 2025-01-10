@@ -1,8 +1,7 @@
-using FixedPoint.SubTypes;
-using FixedPoint;
 using Unity.Burst;
 using Unity.Jobs;
 using Unity.Collections;
+using UnityEngine;
 
 namespace DeterministicPhysicsLibrary.Runtime.Stateless 
 {
@@ -18,7 +17,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             switch (data.input.ColliderType)
             {
                 case ColliderType.None:
-                    data.output.Bounds = new BoundsFp();
+                    data.output.Bounds = new Bounds();
                     break;
                 case ColliderType.Box:
                     data.output.Bounds = GetBoxBounds(data.output.PredictedPosition, data.input.Extents, data.input.Rotation);
@@ -33,41 +32,41 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             rigidbodiesData[index] = data;
         }
 
-        private BoundsFp GetBoxBounds(Vector3Fp center, Vector3Fp extents, QuaternionFp rotation)
+        private Bounds GetBoxBounds(Vector3 center, Vector3 extents, Quaternion rotation)
         {
-            Vector3Fp right = rotation * Vector3Fp.Right;
-            Vector3Fp up = rotation * Vector3Fp.Up;
-            Vector3Fp forward = rotation * Vector3Fp.Forward;
+            Vector3 right = rotation * Vector3.right;
+            Vector3 up = rotation * Vector3.up;
+            Vector3 forward = rotation * Vector3.forward;
 
-            Vector3Fp halfExtentsWorld = new Vector3Fp(
-                MathFp.Abs(extents.x * right.x) + MathFp.Abs(extents.y * up.x) + MathFp.Abs(extents.z * forward.x),
-                MathFp.Abs(extents.x * right.y) + MathFp.Abs(extents.y * up.y) + MathFp.Abs(extents.z * forward.y),
-                MathFp.Abs(extents.x * right.z) + MathFp.Abs(extents.y * up.z) + MathFp.Abs(extents.z * forward.z)
+            Vector3 halfExtentsWorld = new Vector3(
+                Mathf.Abs(extents.x * right.x) + Mathf.Abs(extents.y * up.x) + Mathf.Abs(extents.z * forward.x),
+                Mathf.Abs(extents.x * right.y) + Mathf.Abs(extents.y * up.y) + Mathf.Abs(extents.z * forward.y),
+                Mathf.Abs(extents.x * right.z) + Mathf.Abs(extents.y * up.z) + Mathf.Abs(extents.z * forward.z)
             );
 
-            return new BoundsFp(center, halfExtentsWorld);
+            return new Bounds(center, halfExtentsWorld);
         }
 
-        private BoundsFp GetSphereBounds(Vector3Fp center, Fp radius)
+        private Bounds GetSphereBounds(Vector3 center, float radius)
         {
-            return new BoundsFp(center, new Vector3Fp(radius * 2, radius * 2, radius * 2));
+            return new Bounds(center, new Vector3(radius * 2, radius * 2, radius * 2));
         }
 
-        public Vector3Fp TransformWithQuaternion(Vector3Fp vector, QuaternionFp rotation)
+        public Vector3 TransformWithQuaternion(Vector3 vector, Quaternion rotation)
         {
             rotation.Normalize();
 
-            Fp x = rotation.x;
-            Fp y = rotation.y;
-            Fp z = rotation.z;
-            Fp w = rotation.w;
+            float x = rotation.x;
+            float y = rotation.y;
+            float z = rotation.z;
+            float w = rotation.w;
 
-            Fp vx = w * vector.x + y * vector.z - z * vector.y;
-            Fp vy = w * vector.y + z * vector.x - x * vector.z;
-            Fp vz = w * vector.z + x * vector.y - y * vector.x;
-            Fp vw = -x * vector.x - y * vector.y - z * vector.z;
+            float vx = w * vector.x + y * vector.z - z * vector.y;
+            float vy = w * vector.y + z * vector.x - x * vector.z;
+            float vz = w * vector.z + x * vector.y - y * vector.x;
+            float vw = -x * vector.x - y * vector.y - z * vector.z;
 
-            Vector3Fp result;
+            Vector3 result;
             result.x = vx * w - vw * x + vy * z - vz * y;
             result.y = vy * w - vw * y + vz * x - vx * z;
             result.z = vz * w - vw * z + vx * y - vy * x;

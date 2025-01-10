@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Unity.Jobs;
 using Unity.Collections;
-using FixedPoint;
 
 namespace DeterministicPhysicsLibrary.Runtime.Stateless
 {
@@ -65,7 +64,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             CreateNativeDataArrays();
         }
 
-        public void UpdateSimulation(Fp deltaTime) 
+        public void UpdateSimulation(float deltaTime) 
         {
             if (!_dataArray.IsCreated || !_collisionIndexesHashSet.IsCreated)
                 return;

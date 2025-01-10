@@ -1,5 +1,6 @@
 using FixedPoint.SubTypes;
 using DeterministicPhysicsLibrary.Runtime.Stateless;
+using UnityEngine;
 
 namespace DeterministicPhysicsLibrary.Unity
 {
@@ -15,12 +16,12 @@ namespace DeterministicPhysicsLibrary.Unity
 
             data.ColliderType = configuration.collisionDetection.colliderType;
             data.CollisionLayer = configuration.collisionDetection.collisionLayer;
-            data.Extents = configuration.collisionDetection.extents;
-            data.Radius = configuration.collisionDetection.radius;
+            data.Extents = (Vector3)configuration.collisionDetection.extents;
+            data.Radius = (float)configuration.collisionDetection.radius;
 
-            data.ExternalAcceleration = configuration.dynamics.gravity + simulationConfiguration.externalAcceleration;
-            data.ExternalAngularAcceleration = simulationConfiguration.externalAngularAcceleration;
-            data.Mass = configuration.dynamics.mass;
+            data.ExternalAcceleration = (Vector3)(configuration.dynamics.gravity + simulationConfiguration.externalAcceleration);
+            data.ExternalAngularAcceleration = (Vector3)simulationConfiguration.externalAngularAcceleration;
+            data.Mass = (float)configuration.dynamics.mass;
 
             simulationConfiguration.externalAcceleration = Vector3Fp.Zero;
             simulationConfiguration.externalAngularAcceleration = Vector3Fp.Zero;

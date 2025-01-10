@@ -2,8 +2,7 @@ using System;
 using Unity.Jobs;
 using Unity.Burst;
 using Unity.Collections;
-using FixedPoint;
-using FixedPoint.SubTypes;
+using UnityEngine;
 
 namespace DeterministicPhysicsLibrary.Runtime.Stateless
 {
@@ -83,7 +82,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
 
         private bool IsCollidingSphereWithSphere(DSRigidbodyData sphere1, DSRigidbodyData sphere2)
         {
-            Fp sphereCenterDistance = (sphere1.input.Position - sphere2.output.PredictedPosition).Magnitude;
+            float sphereCenterDistance = (sphere1.input.Position - sphere2.output.PredictedPosition).magnitude;
             return sphere1.input.Radius + sphere2.input.Radius >= sphereCenterDistance;
         }
 
@@ -92,16 +91,16 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             DSRigidbodyData box = rigidbodiesData[boxIndex];
             DSRigidbodyData sphere = rigidbodiesData[sphereIndex];
 
-            QuaternionFp inverseRotation = MathQuaternionFp.Inverse(box.output.PredictedRotation);
-            Vector3Fp localSphereCenter = inverseRotation * (sphere.output.PredictedPosition - box.output.PredictedPosition);
+            Quaternion inverseRotation = Quaternion.Inverse(box.output.PredictedRotation);
+            Vector3 localSphereCenter = inverseRotation * (sphere.output.PredictedPosition - box.output.PredictedPosition);
 
-            Vector3Fp localClosestPoint = new Vector3Fp(
-                MathFp.Clamp(localSphereCenter.x, -box.output.Bounds.Extents.x, box.output.Bounds.Extents.x),
-                MathFp.Clamp(localSphereCenter.y, -box.output.Bounds.Extents.y, box.output.Bounds.Extents.y),
-                MathFp.Clamp(localSphereCenter.z, -box.output.Bounds.Extents.z, box.output.Bounds.Extents.z)
+            Vector3 localClosestPoint = new Vector3(
+                Mathf.Clamp(localSphereCenter.x, -box.output.Bounds.extents.x, box.output.Bounds.extents.x),
+                Mathf.Clamp(localSphereCenter.y, -box.output.Bounds.extents.y, box.output.Bounds.extents.y),
+                Mathf.Clamp(localSphereCenter.z, -box.output.Bounds.extents.z, box.output.Bounds.extents.z)
             );
 
-            Vector3Fp closestPointWorld = box.output.PredictedPosition + (box.output.PredictedRotation * localClosestPoint);
+            Vector3 closestPointWorld = box.output.PredictedPosition + (box.output.PredictedRotation * localClosestPoint);
 
             box.output.ClosestPointWorld = closestPointWorld;
             sphere.output.ClosestPointWorld = closestPointWorld;
@@ -109,7 +108,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             rigidbodiesData[boxIndex] = box;
             rigidbodiesData[sphereIndex] = sphere;
 
-            Fp distanceSquared = (closestPointWorld - sphere.output.PredictedPosition).SqrtMagnitude;
+            float distanceSquared = (closestPointWorld - sphere.output.PredictedPosition).sqrMagnitude;
             return distanceSquared <= sphere.input.Radius * sphere.input.Radius;
         }
 
