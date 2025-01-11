@@ -62,10 +62,10 @@ namespace DeterministicPhysicsLibrary.Unity
         {
             foreach (var rigidBody in deterministicRigidbodies)
             {
-                Vector3 positionUpdate = (Vector3)(rigidBody.Value.output.Velocity) * Time.fixedDeltaTime;
+                Vector3 positionUpdate = (rigidBody.Value.output.Velocity) * Time.fixedDeltaTime;
                 _rigidbodiesComponents[rigidBody.Key].transform.position += positionUpdate;
 
-                Vector3 rotationUpdate = (Vector3)(rigidBody.Value.output.AngularVelocity) * Time.fixedDeltaTime;
+                Vector3 rotationUpdate = (rigidBody.Value.output.AngularVelocity) * Time.fixedDeltaTime;
                 _rigidbodiesComponents[rigidBody.Key].transform.rotation *= Quaternion.Euler(rotationUpdate);
             }
 

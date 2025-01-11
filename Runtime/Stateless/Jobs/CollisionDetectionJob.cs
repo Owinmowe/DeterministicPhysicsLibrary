@@ -95,9 +95,9 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             Vector3 localSphereCenter = inverseRotation * (sphere.output.PredictedPosition - box.output.PredictedPosition);
 
             Vector3 localClosestPoint = new Vector3(
-                Mathf.Clamp(localSphereCenter.x, -box.output.Bounds.extents.x, box.output.Bounds.extents.x),
-                Mathf.Clamp(localSphereCenter.y, -box.output.Bounds.extents.y, box.output.Bounds.extents.y),
-                Mathf.Clamp(localSphereCenter.z, -box.output.Bounds.extents.z, box.output.Bounds.extents.z)
+                Mathf.Clamp(localSphereCenter.x, -box.input.Extents.x / 2, box.input.Extents.x / 2),
+                Mathf.Clamp(localSphereCenter.y, -box.input.Extents.y / 2, box.input.Extents.y / 2),
+                Mathf.Clamp(localSphereCenter.z, -box.input.Extents.z / 2, box.input.Extents.z / 2)
             );
 
             Vector3 closestPointWorld = box.output.PredictedPosition + (box.output.PredictedRotation * localClosestPoint);

@@ -8,5 +8,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
         public QuaternionFp Rotation;
         public BoundsFp Bounds;
         public bool Colliding;
+
+        public Vector3Fp ClosestPointWorld;
     }
 }

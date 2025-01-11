@@ -10,7 +10,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
     [BurstCompile]
     public struct CollisionDetectionJob : IJobParallelFor
     {
-        [ReadOnly] public NativeArray<DMRigidbodyData> rigidbodiesData;
+        public NativeArray<DMRigidbodyData> rigidbodiesData;
         public NativeParallelHashSet<int>.ParallelWriter collisionIndexesHashSet;
 
         public void Execute(int index)
@@ -42,14 +42,14 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
                     }
                     else
                     {
-                        collided = IsCollidingSphereWithBox(rigidbodiesData[i], rigidbodiesData[index]);
+                        collided = IsCollidingSphereWithBox(i, index);
                     }
                 }
                 else
                 {
                     if (rigidbodiesData[index].input.ColliderType == ColliderType.Sphere)
                     {
-                        collided = IsCollidingSphereWithBox(rigidbodiesData[i], rigidbodiesData[index]);
+                        collided = IsCollidingSphereWithBox(index, i);
                     }
                     else
                     {
@@ -76,18 +76,27 @@ namespace DeterministicPhysicsLibrary.Runtime.Managed
             return sphere1.input.Radius + sphere2.input.Radius >= sphereCenterDistance;
         }
 
-        private bool IsCollidingSphereWithBox(DMRigidbodyData sphere, DMRigidbodyData box)
+        private bool IsCollidingSphereWithBox(int sphereIndex, int boxIndex)
         {
+            DMRigidbodyData box = rigidbodiesData[boxIndex];
+            DMRigidbodyData sphere = rigidbodiesData[sphereIndex];
+
             QuaternionFp inverseRotation = MathQuaternionFp.Inverse(box.simData.Rotation);
             Vector3Fp localSphereCenter = inverseRotation * (sphere.simData.Position - box.simData.Position);
 
             Vector3Fp localClosestPoint = new Vector3Fp(
-                MathFp.Clamp(localSphereCenter.x, -box.output.Bounds.Extents.x, box.output.Bounds.Extents.x),
-                MathFp.Clamp(localSphereCenter.y, -box.output.Bounds.Extents.y, box.output.Bounds.Extents.y),
-                MathFp.Clamp(localSphereCenter.z, -box.output.Bounds.Extents.z, box.output.Bounds.Extents.z)
+                MathFp.Clamp(localSphereCenter.x, -box.input.Extents.x / 2, box.input.Extents.x / 2),
+                MathFp.Clamp(localSphereCenter.y, -box.input.Extents.y / 2, box.input.Extents.y / 2),
+                MathFp.Clamp(localSphereCenter.z, -box.input.Extents.z / 2, box.input.Extents.z / 2)
             );
 
             Vector3Fp closestPointWorld = box.simData.Position + (box.simData.Rotation * localClosestPoint);
+
+            box.output.ClosestPointWorld = closestPointWorld;
+            sphere.output.ClosestPointWorld = closestPointWorld;
+
+            rigidbodiesData[boxIndex] = box;
+            rigidbodiesData[sphereIndex] = sphere;
 
             Fp distanceSquared = (closestPointWorld - sphere.simData.Position).SqrtMagnitude;
             return distanceSquared <= sphere.input.Radius * sphere.input.Radius;
