@@ -18,7 +18,7 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
         private Queue<int> _freeIndexesQueue;
         private int _rigidbodyIndex;
 
-        private const int collisionPasses = 6;
+        private const int collisionPasses = 1;
 
         public DSSimulation() 
         {
@@ -110,14 +110,16 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
 
                 collisionArray.Dispose();
 
-                foreach (var data in _dataArray)
-                {
-                    DSRigidbodyData newData = _dataDictionary[data.index];
-                    newData.output = data.output;
-                    _dataDictionary[data.index] = newData;
-                }
-                RigidbodyUpdateCompleteEvent?.Invoke(_dataDictionary);
             }
+
+            foreach (var data in _dataArray)
+            {
+                DSRigidbodyData newData = _dataDictionary[data.index];
+                newData.output = data.output;
+                _dataDictionary[data.index] = newData;
+            }
+
+            RigidbodyUpdateCompleteEvent?.Invoke(_dataDictionary);
         }
 
         private int GetFreeIndex() 

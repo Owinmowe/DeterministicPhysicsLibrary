@@ -1,14 +1,10 @@
 {
-    "name": "DeterministicPhysicsLibrary.Types",
+    "name": "DeterministicPhysicsLibrary.Utils",
     "rootNamespace": "",
-    "references": [
-        "GUID:955e49a12a8026d4ea66a5090288cabf",
-        "GUID:03a39c689aed1624f8eebe4d5bf3b0f0",
-        "GUID:13585a5dc90fcb744866e1d28a16461b"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

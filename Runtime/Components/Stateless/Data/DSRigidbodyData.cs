@@ -19,6 +19,8 @@ namespace DeterministicPhysicsLibrary.Unity
             data.Extents = (Vector3)configuration.collisionDetection.extents;
             data.Radius = (float)configuration.collisionDetection.radius;
 
+            data.CollisionResponseType = configuration.collisionResponse.collisionResponseType;
+
             data.ExternalAcceleration = (Vector3)(configuration.dynamics.gravity + simulationConfiguration.externalAcceleration);
             data.ExternalAngularAcceleration = (Vector3)simulationConfiguration.externalAngularAcceleration;
             data.Mass = (float)configuration.dynamics.mass;

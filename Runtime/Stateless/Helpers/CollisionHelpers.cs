@@ -37,14 +37,14 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
         public static bool IsCollidingSphereWithSphere(ref DSRigidbodyData sphere1, ref DSRigidbodyData sphere2)
         {
             float radiusSum = sphere1.input.Radius + sphere2.input.Radius;
-            Vector3 centerBetweenSpheres = (sphere2.output.PredictedPosition - sphere1.output.PredictedPosition);
+            Vector3 directionBetweenSpheres = (sphere2.output.PredictedPosition - sphere1.output.PredictedPosition);
 
-            float penetrationDepth = radiusSum - centerBetweenSpheres.magnitude;
+            float penetrationDepth = radiusSum - directionBetweenSpheres.magnitude;
 
-            sphere1.output.PenetrationDepthVector = -centerBetweenSpheres.normalized * penetrationDepth;
-            sphere2.output.PenetrationDepthVector = centerBetweenSpheres.normalized * penetrationDepth;
+            sphere1.output.PenetrationDepthVector = -directionBetweenSpheres.normalized * penetrationDepth;
+            sphere2.output.PenetrationDepthVector = directionBetweenSpheres.normalized * penetrationDepth;
 
-            return radiusSum >= centerBetweenSpheres.magnitude;
+            return radiusSum > directionBetweenSpheres.magnitude;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

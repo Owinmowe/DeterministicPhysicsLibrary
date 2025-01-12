@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DeterministicPhysicsLibrary.Runtime.Stateless
 {
-    [BurstCompile]
+    //[BurstCompile]
     public struct CollisionDetectionJob : IJobParallelFor
     {
         public NativeArray<DSRigidbodyData> rigidbodiesData;

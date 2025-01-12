@@ -67,7 +67,7 @@ namespace DeterministicPhysicsLibrary.Unity
                     _rigidbodiesComponents[rigidBody.Key].transform.position = rigidBody.Value.output.PredictedPosition;
                 }
 
-                Vector3 positionUpdate = (rigidBody.Value.output.Velocity) * Time.fixedDeltaTime;
+                Vector3 positionUpdate = (rigidBody.Value.output.Velocity);
                 _rigidbodiesComponents[rigidBody.Key].transform.position += positionUpdate;
 
                 if (rigidBody.Value.output.UsePredictedRotation)
@@ -75,7 +75,7 @@ namespace DeterministicPhysicsLibrary.Unity
                     _rigidbodiesComponents[rigidBody.Key].transform.rotation = rigidBody.Value.output.PredictedRotation;
                 }
 
-                Vector3 rotationUpdate = (rigidBody.Value.output.AngularVelocity) * Time.fixedDeltaTime;
+                Vector3 rotationUpdate = (rigidBody.Value.output.AngularVelocity);
                 _rigidbodiesComponents[rigidBody.Key].transform.rotation *= Quaternion.Euler(rotationUpdate);
             }
 
