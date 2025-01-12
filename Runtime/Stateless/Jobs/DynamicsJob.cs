@@ -15,6 +15,8 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             DSRigidbodyData rigidbody = rigidbodiesData[index];
 
             rigidbody.output.Colliding = false;
+            rigidbody.output.UsePredictedPosition = false;
+            rigidbody.output.UsePredictedRotation = false;
 
             rigidbody.output.Velocity += rigidbody.input.ExternalAcceleration * deltaTime;
             rigidbody.output.AngularVelocity += rigidbody.input.ExternalAngularAcceleration * deltaTime;

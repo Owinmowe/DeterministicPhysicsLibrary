@@ -18,6 +18,8 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
         private Queue<int> _freeIndexesQueue;
         private int _rigidbodyIndex;
 
+        private const int collisionPasses = 6;
+
         public DSSimulation() 
         {
             _dataDictionary = new Dictionary<int, DSRigidbodyData>();
@@ -84,35 +86,38 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             JobHandle calculateBoundsJobHandle = calculateBoundsJob.Schedule(_dataArray.Length, 64);
             calculateBoundsJobHandle.Complete();
 
-            _collisionIndexesHashSet.Clear();
-
-            var collisionDetectionJob = new CollisionDetectionJob()
+            for (int i = 0; i < collisionPasses; i++)
             {
-                rigidbodiesData = _dataArray,
-                collisionIndexesHashSet = _collisionIndexesHashSet.AsParallelWriter()
-            };
-            JobHandle collisionDetectionJobHandle = collisionDetectionJob.Schedule(_dataArray.Length, 64);
-            collisionDetectionJobHandle.Complete();
+                _collisionIndexesHashSet.Clear();
 
-            var collisionArray = _collisionIndexesHashSet.ToNativeArray(Allocator.TempJob);
+                var collisionDetectionJob = new CollisionDetectionJob()
+                {
+                    rigidbodiesData = _dataArray,
+                    collisionIndexesHashSet = _collisionIndexesHashSet.AsParallelWriter()
+                };
+                JobHandle collisionDetectionJobHandle = collisionDetectionJob.Schedule(_dataArray.Length, 64);
+                collisionDetectionJobHandle.Complete();
 
-            var collisionResolutionJob = new CollisionResolutionJob()
-            {
-                rigidbodiesData = _dataArray,
-                collisionIndexesArray = collisionArray
-            };
-            JobHandle collisionResolutionJobHandle = collisionResolutionJob.Schedule();
-            collisionResolutionJobHandle.Complete();
+                var collisionArray = _collisionIndexesHashSet.ToNativeArray(Allocator.TempJob);
 
-            collisionArray.Dispose();
+                var collisionResolutionJob = new CollisionResolutionJob()
+                {
+                    rigidbodiesData = _dataArray,
+                    collisionIndexesArray = collisionArray
+                };
+                JobHandle collisionResolutionJobHandle = collisionResolutionJob.Schedule();
+                collisionResolutionJobHandle.Complete();
 
-            foreach (var data in _dataArray)
-            {
-                DSRigidbodyData newData = _dataDictionary[data.index];
-                newData.output = data.output;
-                _dataDictionary[data.index] = newData;
+                collisionArray.Dispose();
+
+                foreach (var data in _dataArray)
+                {
+                    DSRigidbodyData newData = _dataDictionary[data.index];
+                    newData.output = data.output;
+                    _dataDictionary[data.index] = newData;
+                }
+                RigidbodyUpdateCompleteEvent?.Invoke(_dataDictionary);
             }
-            RigidbodyUpdateCompleteEvent?.Invoke(_dataDictionary);
         }
 
         private int GetFreeIndex() 

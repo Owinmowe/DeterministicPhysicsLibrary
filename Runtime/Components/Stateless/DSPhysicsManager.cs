@@ -62,8 +62,18 @@ namespace DeterministicPhysicsLibrary.Unity
         {
             foreach (var rigidBody in deterministicRigidbodies)
             {
+                if (rigidBody.Value.output.UsePredictedPosition) 
+                {
+                    _rigidbodiesComponents[rigidBody.Key].transform.position = rigidBody.Value.output.PredictedPosition;
+                }
+
                 Vector3 positionUpdate = (rigidBody.Value.output.Velocity) * Time.fixedDeltaTime;
                 _rigidbodiesComponents[rigidBody.Key].transform.position += positionUpdate;
+
+                if (rigidBody.Value.output.UsePredictedRotation)
+                {
+                    _rigidbodiesComponents[rigidBody.Key].transform.rotation = rigidBody.Value.output.PredictedRotation;
+                }
 
                 Vector3 rotationUpdate = (rigidBody.Value.output.AngularVelocity) * Time.fixedDeltaTime;
                 _rigidbodiesComponents[rigidBody.Key].transform.rotation *= Quaternion.Euler(rotationUpdate);
@@ -98,7 +108,6 @@ namespace DeterministicPhysicsLibrary.Unity
                 Gizmos.DrawWireCube(drb.Value.output.Bounds.center, drb.Value.output.Bounds.size);
 
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(drb.Value.output.ClosestPointWorld, .1f);
             }
         }
     }
