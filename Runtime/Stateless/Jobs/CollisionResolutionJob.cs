@@ -30,12 +30,6 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
             }
         }
 
-        private void DecodeCollisionDetectionPair(int encoded, out int index1, out int index2)
-        {
-            index1 = encoded >> 16;
-            index2 = encoded & 0xFFFF;
-        }
-
         private void CalculateKinematicCollisions(ref DSRigidbodyData dataA, ref DSRigidbodyData dataB) 
         {
             bool aKinematic = IsKinematic(dataA.input.CollisionResponseType);
@@ -72,6 +66,12 @@ namespace DeterministicPhysicsLibrary.Runtime.Stateless
         private bool IsKinematic(CollisionResponseType responseType)
         {
             return CollisionResponseUtils.HasFlag(responseType, CollisionResponseType.Kinematic);
+        }
+
+        private void DecodeCollisionDetectionPair(int encoded, out int index1, out int index2)
+        {
+            index1 = encoded >> 16;
+            index2 = encoded & 0xFFFF;
         }
     }
 }
